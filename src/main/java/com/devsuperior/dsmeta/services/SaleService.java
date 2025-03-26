@@ -1,5 +1,6 @@
 package com.devsuperior.dsmeta.services;
 
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +90,7 @@ public class SaleService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<SaleFullDTO> findAllJpql(String minDate, String maxDate, String name){
+	public Page<SaleFullDTO> findAllJpql(String minDate, String maxDate, String name, Pageable pageable){
 		
 		if (maxDate.isEmpty() || maxDate.isBlank()) {
 			maxDateJpql = today;
@@ -100,7 +103,7 @@ public class SaleService {
 			minDateJpql = LocalDate.parse(minDate, fmt1);
 		}
 
-		List<SaleFullDTO> resultRep = repository.searchSaleRepJpql(minDateJpql, maxDateJpql, name);
+		Page<SaleFullDTO> resultRep = repository.searchSaleRepJpql(minDateJpql, maxDateJpql, name, pageable);
 		return resultRep;
 
 	}
